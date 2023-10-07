@@ -15,6 +15,10 @@ char *prompt()
 	write(1, "$ ", 2);
 	n_chars = getline(&buffer, &buffer_size, stdin);
 
+	printf("\nn_chars: %d\n", n_chars);
+	print_array(buffer);
+	printf("\n");
+
 	if (n_chars == EOF)
 	{
 		perror("End of file");

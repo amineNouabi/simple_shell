@@ -13,4 +13,8 @@ char **parse(char *cmd);
 void free2darray(char **arr, int rows);
 int get_num_rows(char **arr);
 
+
+void print_array(char *a);
+void print_2darray(char **a);
+
 #endif /*SHELL_H*/

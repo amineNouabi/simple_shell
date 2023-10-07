@@ -29,6 +29,10 @@ char **parse(char *cmd)
 	}
 	tokens[i] = NULL;
 
+	printf("\ntokens: \n");
+	print_2darray(tokens);
+	printf("\n");
+
 	return (tokens);
 }
 

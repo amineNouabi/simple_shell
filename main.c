@@ -15,6 +15,11 @@ int main(void)
 	while (1)
 	{
 		cmd = parse(prompt());
+
+		printf("\ncmd: \n");
+		print_2darray(cmd);
+		printf("\n");
+
 		rows = get_num_rows(cmd);
 		pid = fork();
 		if (pid == 0)

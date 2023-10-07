@@ -6,11 +6,13 @@
  * Return: 0 on success, 1 on failure
  */
 
-int main(void)
+int main(int ac, char **av)
 {
 	char **cmd;
 	int *status = NULL;
 	pid_t pid;
+
+	(void)ac;
 
 	while (1)
 	{
@@ -20,7 +22,7 @@ int main(void)
 		{
 			if (execve(cmd[0], cmd, NULL) == -1)
 			{
-				perror("./hsh");
+				perror(av[0]);
 				free(cmd); 
 				exit(1);
 			}

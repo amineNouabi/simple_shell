@@ -9,25 +9,19 @@
 int main(void)
 {
 	char **cmd;
-	int *status = NULL, rows;
+	int *status = NULL;
 	pid_t pid;
 
 	while (1)
 	{
 		cmd = parse(prompt());
-
-		printf("\ncmd: \n");
-		print_2darray(cmd);
-		printf("\n");
-
-		rows = get_num_rows(cmd);
 		pid = fork();
 		if (pid == 0)
 		{
 			if (execve(cmd[0], cmd, NULL) == -1)
 			{
 				perror("./hsh");
-				free2darray(cmd, rows);
+				free(cmd); 
 				exit(1);
 			}
 			exit(0);
@@ -37,10 +31,10 @@ int main(void)
 		else
 		{
 			perror("fork");
-			free2darray(cmd, rows);
+			free(cmd);
 			exit(1);
 		}
-		free2darray(cmd, rows);
+		free(cmd);
 	}
 	return (0);
 }

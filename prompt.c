@@ -12,14 +12,14 @@ char *prompt()
 	size_t buffer_size = 0;
 	int n_chars;
 
-	if(isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO))
 		write(1, "$ ", 2);
 	n_chars = getline(&buffer, &buffer_size, stdin);
 
 	if (n_chars == EOF)
 	{
 		/*perror("End of file");*/
-		if(isatty(STDIN_FILENO))
+		if (isatty(STDIN_FILENO))
 			write(1, "\n", 1);
 		free(buffer);
 		exit(0);

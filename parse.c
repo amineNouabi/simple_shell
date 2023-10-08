@@ -15,6 +15,12 @@ char **parse(char *cmd)
 	delimiter = " \t\n";
 	temp = strdup(cmd);
 	token = strtok(temp, delimiter);
+	if (!token)
+	{
+		free(cmd);
+		free(temp);
+		return (NULL);
+	}
 	while (token)
 	{
 		i++;

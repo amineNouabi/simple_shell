@@ -18,6 +18,8 @@ int main(int ac, char **av)
 	while (1)
 	{
 		cmd = parse(prompt());
+		if (!cmd)
+			continue;
 		rows = get_num_rows(cmd);
 		pid = fork();
 		if (pid == 0)

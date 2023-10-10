@@ -10,8 +10,6 @@
 #include <sys/stat.h>
 
 extern char **environ;
-
-
 extern int exit_status;
 
 char *prompt();
@@ -20,5 +18,10 @@ int execute(char **cmd, char **av, int count);
 void free2darray(char **arr);
 char *check_path(char *command);
 void print_env(void);
+void exit_shell(char **args, char **argv, int count);
+
+/** string utils */
+int str_numeric(char *str);
+
 
 #endif /*SHELL_H*/

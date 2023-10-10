@@ -14,7 +14,6 @@ int main(int ac, char **av)
 	int count = 0;
 
 	(void)ac;
-	(void)av;
 
 	while (1)
 	{
@@ -26,10 +25,7 @@ int main(int ac, char **av)
 		if (strcmp(cmd[0], "env") == 0)
 			print_env();
 		else if (strcmp(cmd[0], "exit") == 0)
-		{
-			free2darray(cmd);
-			exit(exit_status);
-		}
+			exit_shell(cmd, av, count);
 		else
 			exit_status = execute(cmd, av, count);
 		free2darray(cmd);

@@ -23,6 +23,10 @@ char *check_path(char *command)
 		}
 	}
 
+	path_var = getenv("PATH");
+		if (!path_var || strlen(path_var) == 0)
+		return (NULL);
+
 	path_var = strdup(getenv("PATH"));
 
 	path = strtok(path_var, ":");

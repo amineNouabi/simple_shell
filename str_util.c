@@ -10,6 +10,9 @@ int str_numeric(char *str)
 {
 	int i;
 
+	if (!str)
+		return (0);
+
 	for (i = 0; str[i]; i++)
 	{
 		if (str[i] < '0' || str[i] > '9')

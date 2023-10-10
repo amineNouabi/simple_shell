@@ -9,8 +9,7 @@
 
 int main(int ac, char **av)
 {
-	char **cmd, *full_path, *delimiter = " \t\n";
-	int allocated;
+	char **cmd, *delimiter = " \t\n";
 	int count = 0;
 
 	(void)ac;
@@ -22,14 +21,8 @@ int main(int ac, char **av)
 		count++;
 		if (!cmd)
 			continue;
-		full_path = check_path(cmd[0], &allocated);
-		if (!full_path)
-		{
-			fprintf(stderr, "%s: %d: %s: not found\n", av[0], count, cmd[0]);
-			free2darray(cmd);
-			continue;
-		}
-		execute(full_path, cmd, allocated);
+
+		exit_status = execute(cmd, av, count);
 	}
-	return (0);
+	return (exit_status);
 }

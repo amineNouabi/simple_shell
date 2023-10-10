@@ -7,15 +7,20 @@
  * Return: cmd path if found, NULL if not found
 */
 
-char *check_path(char *command, int *allocated)
+char *check_path(char *command)
 {
 	char *path_var, *path, *full_path;
 	struct stat st;
+	int i;
 
-	if (command[0] == '/')
+	for (i = 0; command[i]; i++)
 	{
-		*allocated = 0;
-		return (command);
+		if (command[i] == '/')
+		{
+			if (stat(command, &st) == 0)
+				return (strdup(command));
+			return (NULL);
+		}
 	}
 
 	path_var = strdup(getenv("PATH"));
@@ -30,7 +35,6 @@ char *check_path(char *command, int *allocated)
 		if (stat(full_path, &st) == 0)
 		{
 			free(path_var);
-			*allocated = 1;
 			return (full_path);
 		}
 

@@ -1,12 +1,13 @@
 #include "shell.h"
 
+int exit_status = 0;
+
 /**
  * main - Entry point
  * @ac: Number of command line arguments
  * @av: array of command line arguments
  * Return: 0 on success, 1 on failure
  */
-
 int main(int ac, char **av)
 {
 	char **cmd, *delimiter = " \t\n";
@@ -22,7 +23,15 @@ int main(int ac, char **av)
 		if (!cmd)
 			continue;
 
-		exit_status = execute(cmd, av, count);
+		if (strcmp(cmd[0], "env") == 0)
+			print_env();
+		else if (strcmp(cmd[0], "exit") == 0)
+		{
+			free(cmd);
+			exit(exit_status);
+		}
+		else
+			exit_status = execute(cmd, av, count);
 	}
 	return (exit_status);
 }

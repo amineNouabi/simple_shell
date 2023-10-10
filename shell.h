@@ -7,12 +7,14 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 extern char **environ;
 
 char *prompt();
-char **parse(char *cmd);
-void free2darray(char **arr, int rows);
-int get_num_rows(char **arr);
+char **parse(char *cmd, char *delimiter);
+int execute(char *full_path, char **cmd, int allocated);
+void free2darray(char **arr);
+char *check_path(char *command, int *allocated);
 
 #endif /*SHELL_H*/

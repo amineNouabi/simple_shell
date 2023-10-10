@@ -9,41 +9,27 @@
 
 int main(int ac, char **av)
 {
-	char **cmd;
-	int *status = NULL, rows;
-	pid_t pid;
+	char **cmd, *full_path, *delimiter = " \t\n";
+	int allocated;
+	int count = 0;
 
 	(void)ac;
+	(void)av;
 
 	while (1)
 	{
-		cmd = parse(prompt());
+		cmd = parse(prompt(), delimiter);
+		count++;
 		if (!cmd)
 			continue;
-		rows = get_num_rows(cmd);
-		pid = fork();
-		if (pid == 0)
+		full_path = check_path(cmd[0], &allocated);
+		if (!full_path)
 		{
-			if (execve(cmd[0], cmd, environ) == -1)
-			{
-				perror(av[0]);
-				free2darray(cmd, rows);
-				exit(1);
-			}
-			free2darray(cmd, rows);
-			exit(0);
+			fprintf(stderr, "%s: %d: %s: not found\n", av[0], count, cmd[0]);
+			free2darray(cmd);
+			continue;
 		}
-		else if (pid > 0)
-		{
-			wait(status);
-		}
-		else
-		{
-			perror("fork");
-			free2darray(cmd, rows);
-			exit(1);
-		}
-		free2darray(cmd, rows);
+		execute(full_path, cmd, allocated);
 	}
 	return (0);
 }

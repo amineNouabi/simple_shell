@@ -54,6 +54,5 @@ int execute(char **cmd, char **av, int count)
 		return (1);
 	}
 	free(full_path);
-	free2darray(cmd);
 	return (WEXITSTATUS(status));
 }

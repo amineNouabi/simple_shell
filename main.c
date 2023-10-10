@@ -27,11 +27,12 @@ int main(int ac, char **av)
 			print_env();
 		else if (strcmp(cmd[0], "exit") == 0)
 		{
-			free(cmd);
+			free2darray(cmd);
 			exit(exit_status);
 		}
 		else
 			exit_status = execute(cmd, av, count);
+		free2darray(cmd);
 	}
 	return (exit_status);
 }

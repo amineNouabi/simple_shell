@@ -18,22 +18,21 @@ char *prompt()
 
 	if (n_chars == EOF)
 	{
-		/*perror("End of file");*/
 		if (isatty(STDIN_FILENO))
 			write(1, "\n", 1);
 		free(buffer);
-		exit(0);
+		exit(exit_status);
 	}
 	else if (n_chars == 0)
 	{
 		free(buffer);
-		exit(0);
+		exit(exit_status);
 	}
 
 	if (strcmp(buffer, "exit\n") == 0)
 	{
 		free(buffer);
-		exit(0);
+		exit(exit_status);
 	}
 
 	return (buffer);

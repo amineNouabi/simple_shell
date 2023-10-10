@@ -3,16 +3,15 @@
 /**
  * parse - parses command
  * @cmd: command to parse
- *
+ * @delimiter: delimiter at which we need to parse
  * Return: parsed command
  */
 
-char **parse(char *cmd)
+char **parse(char *cmd, char *delimiter)
 {
-	char *delimiter, *temp = NULL, *token = NULL, **tokens = NULL;
+	char *temp = NULL, *token = NULL, **tokens = NULL;
 	int i = 0, j = 0;
 
-	delimiter = " \t\n";
 	temp = strdup(cmd);
 	token = strtok(temp, delimiter);
 	if (!token)
@@ -42,8 +41,8 @@ char **parse(char *cmd)
 		token = strtok(NULL, delimiter);
 		j++;
 	}
-	free(cmd);
 	tokens[j] = NULL;
+	free(cmd);
 	return (tokens);
 }
 

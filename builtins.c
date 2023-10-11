@@ -1,54 +1,6 @@
 #include "shell.h"
 
 /**
- * change_directory - changes directory
- * @args: arguments passed
- * @av: command line arguments passed to main
- * @count: number of shell executions
- * Return: 0 on success, relevant error on failure
- */
-int change_directory(char **args, char **av, int count)
-{
-	char *home_dir, *prev_dir, *current_dir, *new_dir;
-
-	current_dir = getcwd(NULL, 0);
-	if (args[1])
-	{
-		if (strcmp(args[1], "-") == 0)
-		{
-			prev_dir = getenv("OLDPWD");
-			if (!prev_dir)
-				prev_dir = current_dir;
-			printf("%s\n", prev_dir);
-			chdir(prev_dir);
-		}
-		else if (chdir(args[1]) == -1)
-		{
-			fprintf(stderr, "%s: %d: %s: can't cd to %s\n",
-					av[0], count, args[0], args[1]);
-			free(current_dir);
-			return (1);
-		}
-	}
-	else
-	{
-		home_dir = getenv("HOME");
-		if (!home_dir)
-		{
-			free(current_dir);
-			return (1);
-		}
-		chdir(home_dir);
-	}
-	new_dir = getcwd(NULL, 0);
-	setenv("PWD", new_dir, 1);
-	setenv("OLDPWD", current_dir, 1);
-	free(current_dir);
-	free(new_dir);
-	return (0);
-}
-
-/**
  * exit_shell - exits the shell
  * @args: arguments passed to exit
  * @argv: argv passed to main function
@@ -125,3 +77,53 @@ void unset_env(char **args)
 		exit_status = 2;
 	}
 }
+
+/**
+ * change_directory - changes directory
+ * @args: arguments passed
+ * @av: command line arguments passed to main
+ * @count: number of shell executions
+ * Return: 0 on success, relevant error on failure
+ */
+
+int change_directory(char **args, char **av, int count)
+{
+	char *home_dir, *prev_dir, *current_dir, *new_dir;
+
+	current_dir = getcwd(NULL, 0);
+	if (args[1])
+	{
+		if (strcmp(args[1], "-") == 0)
+		{
+			prev_dir = getenv("OLDPWD");
+			if (!prev_dir)
+				prev_dir = current_dir;
+			printf("%s\n", prev_dir);
+			chdir(prev_dir);
+		}
+		else if (chdir(args[1]) == -1)
+		{
+			fprintf(stderr, "%s: %d: %s: can't cd to %s\n",
+					av[0], count, args[0], args[1]);
+			free(current_dir);
+			return (1);
+		}
+	}
+	else
+	{
+		home_dir = getenv("HOME");
+		if (!home_dir)
+		{
+			free(current_dir);
+			return (1);
+		}
+		chdir(home_dir);
+	}
+	new_dir = getcwd(NULL, 0);
+	setenv("PWD", new_dir, 1);
+	setenv("OLDPWD", current_dir, 1);
+	free(current_dir);
+	free(new_dir);
+	return (0);
+}
+

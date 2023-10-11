@@ -18,7 +18,6 @@ int execute(char **cmd, char **av, int count)
 	if (!full_path)
 	{
 		fprintf(stderr, "%s: %d: %s: not found\n", av[0], count, cmd[0]);
-		/* free2darray(cmd); */
 		return (127);
 	}
 
@@ -29,11 +28,9 @@ int execute(char **cmd, char **av, int count)
 		if (execve(full_path, cmd, environ) == -1)
 		{
 			free(full_path);
-			/* free2darray(cmd); */
 			return (127);
 		}
 		free(full_path);
-		/* free2darray(cmd); */
 		return (0);
 	}
 	else if (pid > 0)
@@ -42,7 +39,6 @@ int execute(char **cmd, char **av, int count)
 		if (WIFEXITED(status))
 		{
 			free(full_path);
-			/* free2darray(cmd); */
 			return (WEXITSTATUS(status));
 		}
 	}
@@ -50,10 +46,8 @@ int execute(char **cmd, char **av, int count)
 	{
 		perror("fork");
 		free(full_path);
-		/* free2darray(cmd); */
 		return (1);
 	}
 	free(full_path);
-	/* free2darray(cmd); */
 	return (WEXITSTATUS(status));
 }

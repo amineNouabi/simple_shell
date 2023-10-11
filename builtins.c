@@ -40,3 +40,46 @@ void print_env(void)
 		write(1, "\n", 1);
 	}
 }
+
+/**
+ * set_env - sets an environment variable
+ * @args: arguments passed to setenv
+ * @count: number of commands executed
+ * @argv: argv passed to main function
+ *
+ * Return: void
+*/
+void set_env(char **args, int count, char **argv)
+{
+	int len = arr_len(args);
+	if (len > 3)
+	{
+		fprintf(stderr, "%s: %d: %s: Too many arguments\n", argv[0], count, args[0]);
+		exit_status = 2;
+	}
+	else if (len == 3)
+	{
+		if (setenv(args[1], args[2], 1) == -1)
+		{
+			perror("setenv");
+			exit_status = 2;
+		}
+	}
+}
+
+/**
+ * unset_env - unsets an environment variable
+ * @args: arguments passed to setenv
+ *
+ * Return: void
+ */
+void unset_env(char **args)
+{
+	int len = arr_len(args);
+
+	if (len == 2 && unsetenv(args[1]) == -1)
+	{
+		perror("unsetenv");
+		exit_status = 2;
+	}
+}

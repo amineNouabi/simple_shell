@@ -21,3 +21,22 @@ void free2darray(char **arr)
 		free(arr[i]);
 	free(arr);
 }
+
+/**
+ * arr_len - returns the length of an array
+ * @arr: array to check
+ *
+ * Return: length of array
+ */
+int arr_len(char **arr)
+{
+	int i;
+
+	if (!arr)
+		return (0);
+
+	i = -1;
+	while (arr[++i])
+		;
+	return (i);
+}

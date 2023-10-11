@@ -24,6 +24,10 @@ int main(int ac, char **av)
 
 		if (strcmp(cmd[0], "env") == 0)
 			print_env();
+		else if (strcmp(cmd[0], "setenv") == 0)
+			set_env(cmd, count, av);
+		else if (strcmp(cmd[0], "unsetenv") == 0)
+			unset_env(cmd);
 		else if (strcmp(cmd[0], "exit") == 0)
 			exit_shell(cmd, av, count);
 		else

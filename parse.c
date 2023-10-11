@@ -37,7 +37,13 @@ char **parse(char *cmd, char *delimiter)
 	token = strtok(cmd, delimiter);
 	while (token)
 	{
-		tokens[j] = strdup(token);
+		if (token[0] == '$' && token[1] && token[1] != ' ')
+		{
+			temp = getenv(token + 1);
+			tokens[j] = temp ? strdup(temp) : strdup("");
+		}
+		else
+			tokens[j] = strdup(token);
 		token = strtok(NULL, delimiter);
 		j++;
 	}

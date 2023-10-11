@@ -23,7 +23,7 @@ void print_env(void);
 void exit_shell(char **args, char **argv, int count);
 void set_env(char **args, int count, char **argv);
 void unset_env(char **args);
-int change_directory(char **args, char **av);
+int change_directory(char **args, char **av, int count);
 
 /** string utils */
 int str_numeric(char *str);

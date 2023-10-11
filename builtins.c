@@ -17,7 +17,8 @@ void exit_shell(char **args, char **argv, int count)
 			status = atoi(args[1]);
 		else
 		{
-			fprintf(stderr, "%s: %d: exit: Illegal number: %s\n", argv[0], count, args[1]);
+			fprintf(stderr, "%s: %d: exit: Illegal number: %s\n",
+				argv[0], count, args[1]);
 			status = 2;
 		}
 	}
@@ -27,7 +28,7 @@ void exit_shell(char **args, char **argv, int count)
 
 /**
  * print_env - prints the current environment
- * 
+ *
  * Return: void
  */
 void print_env(void)
@@ -52,9 +53,11 @@ void print_env(void)
 void set_env(char **args, int count, char **argv)
 {
 	int len = arr_len(args);
+
 	if (len > 3)
 	{
-		fprintf(stderr, "%s: %d: %s: Too many arguments\n", argv[0], count, args[0]);
+		fprintf(stderr, "%s: %d: %s: Too many arguments\n",
+			argv[0], count, args[0]);
 		exit_status = 2;
 	}
 	else if (len == 3)
@@ -83,3 +86,49 @@ void unset_env(char **args)
 		exit_status = 2;
 	}
 }
+
+/**
+ * change_directory - changes directory
+ * @args: arguments passed
+ * @av: command line arguments passed to main
+ *
+ * Return: 0 on success, relevant error on failure
+ */
+
+int change_directory(char **args, char **av)
+{
+	char *home_dir, *prev_dir, *current_dir, *new_dir;
+
+	current_dir = getcwd(NULL, 0);
+
+	if (args[1])
+	{
+		if (strcmp(args[1], "-") == 0)
+		{
+			prev_dir = getenv("OLDPWD");
+			printf("%s\n", prev_dir);
+			chdir(prev_dir);
+		}
+		else if (chdir(args[1]) == -1)
+		{
+			fprintf(stderr, "%s: %s: %s: No such file or directory\n",
+					 av[0], args[0], args[1]);
+			free(current_dir);
+			return (1);
+		}
+	}
+	else
+	{
+		home_dir = getenv("HOME");
+		chdir(home_dir);
+	}
+
+	new_dir = getcwd(NULL, 0);
+	setenv("PWD", new_dir, 1);
+	setenv("OLDPWD", current_dir, 1);
+
+	free(current_dir);
+	free(new_dir);
+	return (0);
+}
+

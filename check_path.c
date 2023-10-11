@@ -3,7 +3,6 @@
 /**
  * check_path - checks if command exists in path
  * @command: command to check
- * @allocated: flag to keep track if we allocated memory or not
  * Return: cmd path if found, NULL if not found
 */
 

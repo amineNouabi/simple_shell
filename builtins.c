@@ -17,7 +17,8 @@ void exit_shell(char **args, char **argv, int count)
 			status = atoi(args[1]);
 		else
 		{
-			fprintf(stderr, "%s: %d: exit: Illegal number: %s\n", argv[0], count, args[1]);
+			fprintf(stderr, "%s: %d: exit: Illegal number: %s\n",
+				argv[0], count, args[1]);
 			status = 2;
 		}
 	}
@@ -27,7 +28,7 @@ void exit_shell(char **args, char **argv, int count)
 
 /**
  * print_env - prints the current environment
- * 
+ *
  * Return: void
  */
 void print_env(void)
@@ -76,4 +77,3 @@ void unset_env(char **args)
 		exit_status = 2;
 	}
 }
-

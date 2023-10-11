@@ -30,6 +30,8 @@ int main(int ac, char **av)
 			unset_env(cmd);
 		else if (strcmp(cmd[0], "exit") == 0)
 			exit_shell(cmd, av, count);
+		else if (strcmp(cmd[0], "cd") == 0)
+			exit_status = change_directory(cmd, av, count);
 		else
 			exit_status = execute(cmd, av, count);
 		update_env_status();

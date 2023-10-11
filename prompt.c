@@ -28,12 +28,5 @@ char *prompt()
 		free(buffer);
 		exit(exit_status);
 	}
-
-	/*if (strcmp(buffer, "exit\n") == 0)
-	//{
-	//	free(buffer);
-	//	exit(exit_status);
-	}
-	*/
 	return (buffer);
 }

@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 extern char **environ;
 extern int exit_status;
@@ -22,6 +23,7 @@ void print_env(void);
 void exit_shell(char **args, char **argv, int count);
 void set_env(char **args);
 void unset_env(char **args);
+int change_directory(char **args, char **av, int count);
 
 void update_env_status();
 void update_env_pid(int pid);

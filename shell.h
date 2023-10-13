@@ -21,6 +21,7 @@ typedef struct alias
 extern char **environ;
 extern int exit_status;
 extern alias_t *alias_list[50];
+extern int n_alias;
 
 /*Command processing*/
 char *prompt();
@@ -37,6 +38,7 @@ void unset_env(char **args);
 int change_directory(char **args, char **av, int count);
 void handle_alias(char **cmd);
 alias_t *create_alias(char *arg);
+void store_alias(char *cmd);
 void free_alias(alias_t **arr);
 
 void update_env_status();

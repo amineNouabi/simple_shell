@@ -1,5 +1,7 @@
 #include "shell.h"
 
+int n_alias;
+
 /**
  * handle_alias - handles builtin alias command
  * @cmd: arguments passed
@@ -9,39 +11,69 @@
 
 void handle_alias(char **cmd)
 {
-	static int n_alias;
-	alias_t *new_alias;
 	int i, j, found;
-	/*Print aliases*/
+
 	if (!cmd[1])
 	{
-		for (j = 0; alias_list[j]; j++)
-			printf("%s=\'%s\'\n", alias_list[j]->name, alias_list[j]->value);
+		for (i = 0; alias_list[i]; i++)
+			printf("%s=\'%s\'\n", alias_list[i]->name, alias_list[i]->value);
 		return;
 	}
-
-	/*Store alias*/
-	for (i = 1; cmd[i]; i++)
+	else
 	{
-		new_alias = create_alias(cmd[i]);
-		found = 0;
-		for (j = 0; j < n_alias; j++)
+		for (i = 1; cmd[i]; i++)
 		{
-			if (strcmp(alias_list[j]->name, new_alias->name) == 0)
+			if (strchr(cmd[i], '='))
+				store_alias(cmd[i]);
+			else
 			{
-				free(alias_list[j]->value);
-				alias_list[j]->value = new_alias->value;
-				free(new_alias->name);
-				free(new_alias);
-				found = 1;
-				break;
+				found = 0;
+				for (j = 0; alias_list[j]; j++)
+				{
+					if (strcmp(cmd[i], alias_list[j]->name) == 0)
+					{
+						printf("%s=\'%s\'\n", alias_list[j]->name, alias_list[j]->value);
+						found = 1;
+						break;
+					}
+				}
+				if (!found)
+					printf("%s: %s not found\n", cmd[0], cmd[i]);
 			}
 		}
-		if (!found)
+	}
+}
+
+/**
+ * store_alias - Stores aliases
+ * @cmd: arguments passed
+ *
+ * Return: void
+*/
+
+void store_alias(char *cmd)
+{
+	int i, found;
+	alias_t *new_alias;
+
+	new_alias = create_alias(cmd);
+	found = 0;
+	for (i = 0; i < n_alias; i++)
+	{
+		if (strcmp(alias_list[i]->name, new_alias->name) == 0)
 		{
-			alias_list[n_alias++] = new_alias;
-			alias_list[n_alias] = NULL;
+			free(alias_list[i]->value);
+			alias_list[i]->value = new_alias->value;
+			free(new_alias->name);
+			free(new_alias);
+			found = 1;
+			break;
 		}
+	}
+	if (!found)
+	{
+		alias_list[n_alias++] = new_alias;
+		alias_list[n_alias] = NULL;
 	}
 }
 

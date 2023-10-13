@@ -3,7 +3,7 @@
 /**
  * update_env_pid - updates the $$ variable
  * @pid: pid of the shell
- * 
+ *
  * Return: void
  */
 void update_env_pid(int pid)
@@ -35,7 +35,7 @@ void update_env_pid(int pid)
 /**
  * update_env_status - updates the $? variable
  * @pid: pid of the shell
- * 
+ *
  * Return: void
  */
 void update_env_status()

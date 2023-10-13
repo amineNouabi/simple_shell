@@ -21,6 +21,7 @@ char *prompt()
 		if (isatty(STDIN_FILENO))
 			write(1, "\n", 1);
 		free(buffer);
+		free_alias(alias_list);
 		exit(exit_status);
 	}
 	else if (n_chars == 0)

@@ -20,12 +20,12 @@ typedef struct alias
 
 extern char **environ;
 extern int exit_status;
-static alias_t *alias_list[50];
+extern alias_t *alias_list[50];
 
 /*Command processing*/
 char *prompt();
 char **parse(char *cmd, char *delimiter);
-char **parse_alias(const char *str);
+char **parse_alias(char *cmd);
 int execute(char **cmd, char **av, int count);
 char *check_path(char *command);
 

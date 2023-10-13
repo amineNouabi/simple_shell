@@ -1,6 +1,7 @@
 #include "shell.h"
 
 int exit_status = 0;
+alias_t *alias_list[50];
 
 /**
  * main - Entry point

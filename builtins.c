@@ -23,6 +23,7 @@ void exit_shell(char **args, char **argv, int count)
 		}
 	}
 	free2darray(args);
+	free_alias(alias_list);
 	exit(status);
 }
 
@@ -51,6 +52,7 @@ void print_env(void)
 void set_env(char **args)
 {
 	int len = arr_len(args);
+
 	if (len == 3)
 	{
 		if (setenv(args[1], args[2], 1) == -1)

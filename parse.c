@@ -52,3 +52,60 @@ char **parse(char *cmd, char *delimiter)
 	return (tokens);
 }
 
+/**
+ * parse_alias - Tokenize a string based on certain delimiters.
+ * @str: The string to tokenize.
+ *
+ * Return: An array of strings (tokens).
+ */
+char **parse_alias(const char *str)
+{
+	int i, j, len, start, end, k;
+	char **tokens;
+
+	i = 0;
+	j = 0;
+	len = strlen(str);
+	tokens = malloc(sizeof(char *) * (len + 1));
+	if (!tokens)
+		return (NULL);
+	while (i < len)
+	{
+		while ((str[i] == ' ' || str[i] == '\n') && i < len)
+			i++;
+		start = i;
+		while (str[i] && str[i] != ' ' && str[i] != '=' && str[i] != '\n')
+			i++;
+		if (str[i] == '=')
+		{
+			i++;
+			if (str[i] == '"')
+			{
+				i++;
+				while (str[i] && str[i] != '"')
+					i++;
+				if (str[i])
+					i++;
+			}
+		}
+		end = i;
+		while ((str[end - 1] == ' ' || str[end - 1] == '\n') && end > start)
+			end--;
+		if (end - start > 0)
+		{
+			tokens[j] = malloc(end - start + 1);
+			if (!tokens[j])
+			{
+				for (k = 0; k < j; k++)
+					free(tokens[k]);
+				free(tokens);
+				return (NULL);
+			}
+			strncpy(tokens[j], &str[start], end - start);
+			tokens[j][end - start] = '\0';
+			j++;
+		}
+	}
+	tokens[j] = NULL;
+	return (tokens);
+}

@@ -10,19 +10,25 @@ int exit_status = 0;
  */
 int main(int ac, char **av)
 {
-	char **cmd, *delimiter = " \t\n";
+	char **cmd, *delimiter = " \t\n", *input;
 	int count = 0;
 
 	(void)ac;
 	update_env_pid(getpid());
 	while (1)
 	{
-		cmd = parse(prompt(), delimiter);
+		input = prompt();
+		if (strncmp(input, "alias", 5) == 0)
+			cmd = parse_alias(input);
+		else
+			cmd = parse(input, delimiter);
 		count++;
 		if (!cmd)
 			continue;
 
-		if (strcmp(cmd[0], "env") == 0)
+		if (strcmp(cmd[0], "alias") == 0)
+			handle_alias(cmd);
+		else if (strcmp(cmd[0], "env") == 0)
 			print_env();
 		else if (strcmp(cmd[0], "setenv") == 0)
 			set_env(cmd);

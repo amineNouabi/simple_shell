@@ -2,11 +2,12 @@
 
 /**
  * prompt - Displays prompt to input command
+ * @exit_status: exit status of the shell
  *
  * Return: buffer (string);
  */
 
-char *prompt()
+char *prompt(int exit_status)
 {
 	char *buffer = NULL;
 	size_t buffer_size = 0;

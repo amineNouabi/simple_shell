@@ -7,7 +7,7 @@
  * @count: number of commands executed
  * Return: void
  */
-void exit_shell(char **args, char **argv, int count)
+void exit_shell(char **args, char **argv, int count, int exit_status)
 {
 	int status = exit_status;
 
@@ -46,10 +46,11 @@ void print_env(void)
 /**
  * set_env - sets an environment variable
  * @args: arguments passed to setenv
+ * @exit_status: exit status of the shell
  *
  * Return: void
 */
-void set_env(char **args)
+void set_env(char **args, int *exit_status)
 {
 	int len = arr_len(args);
 
@@ -58,7 +59,7 @@ void set_env(char **args)
 		if (setenv(args[1], args[2], 1) == -1)
 		{
 			perror("setenv");
-			exit_status = 2;
+			*exit_status = 2;
 		}
 	}
 }
@@ -66,17 +67,18 @@ void set_env(char **args)
 /**
  * unset_env - unsets an environment variable
  * @args: arguments passed to setenv
+ * @exit_status: exit status of the shell
  *
  * Return: void
  */
-void unset_env(char **args)
+void unset_env(char **args, int *exit_status)
 {
 	int len = arr_len(args);
 
 	if (len == 2 && unsetenv(args[1]) == -1)
 	{
 		perror("unsetenv");
-		exit_status = 2;
+		*exit_status = 2;
 	}
 }
 

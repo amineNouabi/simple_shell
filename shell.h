@@ -19,12 +19,11 @@ typedef struct alias
 } alias_t;
 
 extern char **environ;
-extern int exit_status;
 extern alias_t *alias_list[50];
 extern int n_alias;
 
 /*Command processing*/
-char *prompt();
+char *prompt(int exit_status);
 char **parse(char *cmd, char *delimiter, int exit_status, int shell_pid);
 void parse_token(char **tokens, char *token, int i,
 				 int exit_status, int shell_pid);
@@ -35,9 +34,9 @@ void remove_comments(char *cmd);
 
 /** builtins */
 void print_env(void);
-void exit_shell(char **args, char **argv, int count);
-void set_env(char **args);
-void unset_env(char **args);
+void exit_shell(char **args, char **argv, int count, int exit_status);
+void set_env(char **args, int *exit_status);
+void unset_env(char **args, int *exit_status);
 int change_directory(char **args, char **av, int count);
 void handle_alias(char **cmd);
 alias_t *create_alias(char *arg);

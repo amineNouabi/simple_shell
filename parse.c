@@ -12,6 +12,7 @@ char **parse(char *cmd, char *delimiter)
 	char *temp = NULL, *token = NULL, **tokens = NULL;
 	int i = 0, j = 0;
 
+	replace_aliases(&cmd, delimiter);
 	temp = strdup(cmd);
 	token = strtok(temp, delimiter);
 	if (!token)
@@ -26,14 +27,12 @@ char **parse(char *cmd, char *delimiter)
 		token = strtok(NULL, delimiter);
 	}
 	free(temp);
-
 	tokens = malloc(sizeof(char *) * (i + 1));
 	if (!tokens)
 	{
 		free(cmd);
 		return (NULL);
 	}
-
 	token = strtok(cmd, delimiter);
 	while (token)
 	{
@@ -53,64 +52,39 @@ char **parse(char *cmd, char *delimiter)
 }
 
 /**
- * parse_alias - Parses alias command
- * @cmd: Command to parse
+ * replace_aliases - Replaces alias in command by its value
+ * @cmd: input command to replace
+ * @delimiter: delimiter to tokenize command
  *
- * Return: An array of strings (tokens).
- */
-char **parse_alias(char *cmd)
+ * Return: void
+*/
+
+void replace_aliases(char **cmd, char *delimiter)
 {
-	int i, j, len, start, end, k;
-	char **tokens;
-	
-	i = 0;
-	j = 0;
-	len = strlen(cmd);
-	tokens = malloc(sizeof(char *) * (len + 1));
-	if (!tokens)
+	char *temp, *token;
+	int k, l, flag;
+
+	temp = strdup(*cmd);
+	token = strtok(temp, delimiter);
+	for (k = 0; alias_list[k]; k++)
 	{
-		free(cmd);
-		return (NULL);
-	}
-	while (i < len)
-	{
-		while ((cmd[i] == ' ' || cmd[i] == '\n') && i < len)
-			i++;
-		start = i;
-		while (cmd[i] && cmd[i] != ' ' && cmd[i] != '=' && cmd[i] != '\n')
-			i++;
-		if (cmd[i] == '=')
+		flag = 0;
+		if (strcmp(token, alias_list[k]->name) == 0)
 		{
-			i++;
-			if (cmd[i] == '"')
+			for (l = 0; alias_list[l]; l++)
 			{
-				i++;
-				while (cmd[i] && cmd[i] != '"')
-					i++;
-				if (cmd[i])
-					i++;
+				if (strcmp(alias_list[k]->value, alias_list[l]->name) == 0)
+				{
+					*cmd = replace_string(*cmd, alias_list[l]->value);
+					flag = 1;
+					break;
+				}
 			}
-		}
-		end = i;
-		while ((cmd[end - 1] == ' ' || cmd[end - 1] == '\n') && end > start)
-			end--;
-		if (end - start > 0)
-		{
-			tokens[j] = malloc(end - start + 1);
-			if (!tokens[j])
-			{
-				for (k = 0; k < j; k++)
-					free(tokens[k]);
-				free(cmd);
-				free(tokens);
-				return (NULL);
-			}
-			strncpy(tokens[j], &cmd[start], end - start);
-			tokens[j][end - start] = '\0';
-			j++;
+			if (!flag)
+				*cmd = replace_string(*cmd, alias_list[k]->value);
+			break;
 		}
 	}
-	tokens[j] = NULL;
-	free(cmd);
-	return (tokens);
+	free(temp);
 }
+

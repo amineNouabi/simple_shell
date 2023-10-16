@@ -19,10 +19,7 @@ int main(int ac, char **av)
 	while (1)
 	{
 		input = prompt();
-		if (strncmp(input, "alias", 5) == 0)
-			cmd = parse_alias(input);
-		else
-			cmd = parse(input, delimiter);
+		cmd = parse(input, delimiter);
 		count++;
 		if (!cmd)
 			continue;

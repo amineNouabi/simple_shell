@@ -26,7 +26,7 @@ extern int n_alias;
 /*Command processing*/
 char *prompt();
 char **parse(char *cmd, char *delimiter);
-char **parse_alias(char *cmd);
+void replace_aliases(char **cmd, char *delimiter);
 int execute(char **cmd, char **av, int count);
 char *check_path(char *command);
 
@@ -39,6 +39,7 @@ int change_directory(char **args, char **av, int count);
 void handle_alias(char **cmd);
 alias_t *create_alias(char *arg);
 void store_alias(char *cmd);
+char *find_alias(char *name);
 void free_alias(alias_t **arr);
 
 void update_env_status();
@@ -46,6 +47,7 @@ void update_env_pid(int pid);
 
 /** string utils */
 int str_numeric(char *str);
+char *replace_string(char *input, char *replacement);
 
 /** array utils */
 int arr_len(char **arr);

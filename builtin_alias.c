@@ -11,7 +11,7 @@ int n_alias;
 
 void handle_alias(char **cmd)
 {
-	int i, j, found;
+	int i, j, k, found;
 
 	if (!cmd[1])
 	{
@@ -25,6 +25,11 @@ void handle_alias(char **cmd)
 		{
 			if (strchr(cmd[i], '='))
 				store_alias(cmd[i]);
+			else if (strcmp(cmd[i], "alias") == 0)
+			{
+				for (k = 0; alias_list[k]; k++)
+					printf("%s=\'%s\'\n", alias_list[k]->name, alias_list[k]->value);
+			}
 			else
 			{
 				found = 0;
@@ -86,7 +91,7 @@ void store_alias(char *cmd)
 alias_t *create_alias(char *arg)
 {
 	char name[50], value[100];
-	char *equals, *quote_start, *quote_end;
+	char *equals;
 	int n;
 	alias_t *alias;
 
@@ -99,11 +104,7 @@ alias_t *create_alias(char *arg)
 	strncpy(name, arg, n);
 	name[n] = '\0';
 
-	quote_start = strchr(arg, '\"');
-	quote_end = strrchr(arg, '\"');
-	n = quote_end - quote_start - 1;
-	strncpy(value, quote_start + 1, n);
-	value[n] = '\0';
+	strcpy(value, equals + 1);
 
 	alias->name = strdup(name);
 	if (!alias->name)
@@ -119,6 +120,25 @@ alias_t *create_alias(char *arg)
 		return (NULL);
 	}
 	return (alias);
+}
+
+/**
+ * find_alias - finds an alias by name
+ * @name: alias name to search for
+ *
+ * Return: alias value if found, NULL otherwise
+ */
+
+char *find_alias(char *name)
+{
+	int i;
+
+	for (i = 0; alias_list[i]; i++)
+	{
+		if (strcmp(name, alias_list[i]->name) == 0)
+			return (alias_list[i]->value);
+	}
+	return (NULL);
 }
 
 /**

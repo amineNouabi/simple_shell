@@ -12,14 +12,13 @@ alias_t *alias_list[50];
 int main(int ac, char **av)
 {
 	char **cmd, *delimiter = " \t\n", *input;
-	int count = 0;
+	int count = 0, shell_pid = getpid();
 
 	(void)ac;
-	update_env_pid(getpid());
 	while (1)
 	{
 		input = prompt();
-		cmd = parse(input, delimiter);
+		cmd = parse(input, delimiter, exit_status, shell_pid);
 		count++;
 		if (!cmd)
 			continue;
@@ -38,7 +37,6 @@ int main(int ac, char **av)
 			exit_status = change_directory(cmd, av, count);
 		else
 			exit_status = execute(cmd, av, count);
-		update_env_status();
 		free2darray(cmd);
 	}
 	return (exit_status);

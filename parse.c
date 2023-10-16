@@ -4,14 +4,16 @@
  * parse - parses command
  * @cmd: command to parse
  * @delimiter: delimiter at which we need to parse
+ * @exit_status: exit status of the shell
+ * @shell_pid: pid of the shell
+ *
  * Return: parsed command
  */
-
-char **parse(char *cmd, char *delimiter)
+char **parse(char *cmd, char *delimiter, int exit_status, int shell_pid)
 {
 	char *temp = NULL, *token = NULL, **tokens = NULL;
 	int i = 0, j = 0;
-
+	remove_comments(cmd);
 	replace_aliases(&cmd, delimiter);
 	temp = strdup(cmd);
 	token = strtok(temp, delimiter);
@@ -36,13 +38,7 @@ char **parse(char *cmd, char *delimiter)
 	token = strtok(cmd, delimiter);
 	while (token)
 	{
-		if (token[0] == '$' && token[1] && token[1] != ' ')
-		{
-			temp = getenv(token + 1);
-			tokens[j] = temp ? strdup(temp) : strdup("");
-		}
-		else
-			tokens[j] = strdup(token);
+		parse_token(tokens, token, j, exit_status, shell_pid);
 		token = strtok(NULL, delimiter);
 		j++;
 	}
@@ -88,3 +84,60 @@ void replace_aliases(char **cmd, char *delimiter)
 	free(temp);
 }
 
+/**
+ * parse_token - parses token and replaces it with its value
+ * @tokens: input command to replace
+ * @token: token to replace
+ * @i: index of token
+ * @exit_status: exit status of the shell
+ * @shell_pid: pid of the shell
+ *
+ * Return: void
+ */
+void parse_token(char **tokens, char *token, int i,
+				 int exit_status, int shell_pid)
+{
+	char *temp = NULL;
+
+	if (strlen(token) > 1 && token[0] == '$')
+	{
+		if (token[1] == '$' || token[1] == '?')
+		{
+			temp = malloc(sizeof(char) * 10);
+			if (!temp)
+			{
+				perror("Error: ");
+				exit(1);
+			}
+			sprintf(temp, "%d", token[1] == '$' ? shell_pid : exit_status);
+			tokens[i] = temp;
+		}
+		else if (token[1])
+		{
+			temp = getenv(token + 1);
+			tokens[i] = temp ? strdup(temp) : strdup("");
+		}
+	}
+	else
+		tokens[i] = strdup(token);
+}
+
+/**
+ * remove_comments - removes comments from command
+ * @cmd: command to remove comments from
+ *
+ * Return: void
+ */
+void remove_comments(char *cmd)
+{
+	int i = -1;
+
+	while (cmd[++i])
+	{
+		if (cmd[i] == '#' && (i == 0 || cmd[i - 1] == ' '))
+		{
+			cmd[i] = '\0';
+			break;
+		}
+	}
+}

@@ -65,3 +65,22 @@ char *replace_string(char *input, char *replacement)
 	free(input);
 	return (result);
 }
+
+/**
+ * str_tokens_length - returns the length tokens in a string
+ * @str: string to check
+ * @delimiter: delimiter to tokenize string
+ *
+ * Return: length of cmd
+ */
+int str_tokens_length(char *str, char *delimiter)
+{
+	char *temp, *token;
+	int count = 0;
+
+	temp = strdup(str);
+	while ((token = strtok(NULL, delimiter)))
+		count++;
+	free(temp);
+	return (count);
+}

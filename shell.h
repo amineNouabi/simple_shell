@@ -25,10 +25,13 @@ extern int n_alias;
 
 /*Command processing*/
 char *prompt();
-char **parse(char *cmd, char *delimiter);
+char **parse(char *cmd, char *delimiter, int exit_status, int shell_pid);
+void parse_token(char **tokens, char *token, int i,
+				 int exit_status, int shell_pid);
 void replace_aliases(char **cmd, char *delimiter);
 int execute(char **cmd, char **av, int count);
 char *check_path(char *command);
+void remove_comments(char *cmd);
 
 /** builtins */
 void print_env(void);
@@ -42,12 +45,10 @@ void store_alias(char *cmd);
 char *find_alias(char *name);
 void free_alias(alias_t **arr);
 
-void update_env_status();
-void update_env_pid(int pid);
-
 /** string utils */
 int str_numeric(char *str);
 char *replace_string(char *input, char *replacement);
+int str_tokens_length(char *str, char *delimiter);
 
 /** array utils */
 int arr_len(char **arr);

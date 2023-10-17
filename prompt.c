@@ -3,11 +3,12 @@
 /**
  * prompt - Displays prompt to input command
  * @exit_status: exit status of the shell
+ * @alias_list: Array of stored aliases
  *
  * Return: buffer (string);
  */
 
-char *prompt(int exit_status)
+char *prompt(int exit_status, alias_t **alias_list)
 {
 	char *buffer = NULL;
 	size_t buffer_size = 0;

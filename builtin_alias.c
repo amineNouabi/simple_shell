@@ -1,15 +1,13 @@
 #include "shell.h"
 
-int n_alias;
-
 /**
  * handle_alias - handles builtin alias command
  * @cmd: arguments passed
- *
+ * @alias_list: Array of stored aliases
  * Return: void
  */
 
-void handle_alias(char **cmd)
+void handle_alias(char **cmd, alias_t **alias_list)
 {
 	int i, j, k, found;
 
@@ -24,7 +22,7 @@ void handle_alias(char **cmd)
 		for (i = 1; cmd[i]; i++)
 		{
 			if (strchr(cmd[i], '='))
-				store_alias(cmd[i]);
+				store_alias(cmd[i], alias_list);
 			else if (strcmp(cmd[i], "alias") == 0)
 			{
 				for (k = 0; alias_list[k]; k++)
@@ -52,14 +50,16 @@ void handle_alias(char **cmd)
 /**
  * store_alias - Stores aliases
  * @cmd: arguments passed
+ * @alias_list: Array of stored aliases
  *
  * Return: void
 */
 
-void store_alias(char *cmd)
+void store_alias(char *cmd, alias_t **alias_list)
 {
 	int i, found;
 	alias_t *new_alias;
+	static int n_alias;
 
 	new_alias = create_alias(cmd);
 	found = 0;
@@ -120,25 +120,6 @@ alias_t *create_alias(char *arg)
 		return (NULL);
 	}
 	return (alias);
-}
-
-/**
- * find_alias - finds an alias by name
- * @name: alias name to search for
- *
- * Return: alias value if found, NULL otherwise
- */
-
-char *find_alias(char *name)
-{
-	int i;
-
-	for (i = 0; alias_list[i]; i++)
-	{
-		if (strcmp(name, alias_list[i]->name) == 0)
-			return (alias_list[i]->value);
-	}
-	return (NULL);
 }
 
 /**

@@ -5,9 +5,13 @@
  * @args: arguments passed to exit
  * @argv: argv passed to main function
  * @count: number of commands executed
+ * @exit_status: exit status of the shell
+ * @alias_list: Array of stored aliases
  * Return: void
  */
-void exit_shell(char **args, char **argv, int count, int exit_status)
+
+void exit_shell(char **args, char **argv, int count,
+		int exit_status, alias_t **alias_list)
 {
 	int status = exit_status;
 
@@ -32,6 +36,7 @@ void exit_shell(char **args, char **argv, int count, int exit_status)
  *
  * Return: void
  */
+
 void print_env(void)
 {
 	int i;

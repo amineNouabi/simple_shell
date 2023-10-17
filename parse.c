@@ -6,15 +6,18 @@
  * @delimiter: delimiter at which we need to parse
  * @exit_status: exit status of the shell
  * @shell_pid: pid of the shell
- *
+ * @alias_list: Array of stored aliases
  * Return: parsed command
  */
-char **parse(char *cmd, char *delimiter, int exit_status, int shell_pid)
+
+char **parse(char *cmd, char *delimiter, int exit_status,
+		int shell_pid, alias_t **alias_list)
 {
 	char *temp = NULL, *token = NULL, **tokens = NULL;
 	int i = 0, j = 0;
+
 	remove_comments(cmd);
-	replace_aliases(&cmd, delimiter);
+	replace_aliases(&cmd, delimiter, alias_list);
 	temp = strdup(cmd);
 	token = strtok(temp, delimiter);
 	if (!token)
@@ -51,11 +54,12 @@ char **parse(char *cmd, char *delimiter, int exit_status, int shell_pid)
  * replace_aliases - Replaces alias in command by its value
  * @cmd: input command to replace
  * @delimiter: delimiter to tokenize command
+ * @alias_list: Array of stored aliases
  *
  * Return: void
 */
 
-void replace_aliases(char **cmd, char *delimiter)
+void replace_aliases(char **cmd, char *delimiter, alias_t **alias_list)
 {
 	char *temp, *token;
 	int k, l, flag;

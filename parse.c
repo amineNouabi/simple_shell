@@ -145,3 +145,44 @@ void remove_comments(char *cmd)
 		}
 	}
 }
+
+/**
+ * parse_file - parses commands inside file
+ * @input: command to parse
+ * @delimiter: delimiter to use
+ *
+ * Return: tokens on success, NULL on failure
+ */
+
+char **parse_file(char *input, char *delimiter)
+{
+	char *token = NULL, *temp = NULL, **tokens = NULL;
+	int i = 0, j = 0;
+
+	temp = strdup(input);
+	token = strtok(temp, delimiter);
+	if (!token)
+	{
+		free(temp);
+		return (NULL);
+	}
+	while (token)
+	{
+		i++;
+		token = strtok(NULL, delimiter);
+	}
+	free(temp);
+	tokens = malloc(sizeof(char *) * (i + 1));
+	if (!tokens)
+		return (NULL);
+	token = strtok(input, delimiter);
+	while (token)
+	{
+		tokens[j] = strdup(token);
+		token = strtok(NULL, delimiter);
+		j++;
+	}
+	tokens[j] = NULL;
+	return (tokens);
+}
+

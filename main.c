@@ -12,7 +12,11 @@ int main(int ac, char **av)
 	int count = 0, shell_pid = getpid(), exit_status = 0;
 	alias_t *alias_list[50] = {NULL};
 
-	(void)ac;
+	if (ac == 2)
+	{
+		execute_file(av[1], av, &exit_status);
+		return (exit_status);
+	}
 	while (1)
 	{
 		input = prompt(exit_status, alias_list);

@@ -51,3 +51,44 @@ int execute(char **cmd, char **av, int count)
 	free(full_path);
 	return (WEXITSTATUS(status));
 }
+
+/**
+ * execute_file - Executes commands in file line by line
+ * @filename: name of file to execute
+ * @av: command line arguments passed to program
+ * @exit_status: exit status of our program
+ *
+ * Return: void
+ */
+
+void execute_file(char *filename, char **av, int *exit_status)
+{
+	int fd, i, count = 0;
+	char **lines, **command, buffer[1024];
+	ssize_t n_read;
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+	{
+		fprintf(stderr, "%s: %d: Can't open %s\n", av[0], count, av[1]);
+		*exit_status = 127;
+		return;
+	}
+	n_read = read(fd, buffer, sizeof(buffer));
+	if (n_read <= 0)
+	{
+		close(fd);
+		*exit_status = 0;
+		return;
+	}
+	buffer[n_read] = '\0';
+	lines = parse_file(buffer, "\n");
+	for (i = 0; lines[i]; i++)
+	{
+		command = parse_file(lines[i], " \t\n");
+		*exit_status = execute(command, av, count);
+		free2darray(command);
+	}
+	free2darray(lines);
+	close(fd);
+}

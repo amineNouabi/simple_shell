@@ -9,6 +9,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <fcntl.h>
 
 /*Structs*/
 
@@ -33,8 +34,10 @@ char **parse(char *cmd, char *delimiter, int exit_status,
 		int shell_pid, alias_t **alias_list);
 void parse_token(char **tokens, char *token, int i,
 				 int exit_status, int shell_pid);
+char **parse_file(char *input, char *delimiter);
 void replace_aliases(char **cmd, char *delimiter, alias_t **alias_list);
 int execute(char **cmd, char **av, int count);
+void execute_file(char *filename, char **av, int *exit_status);
 char *check_path(char *command);
 void remove_comments(char *cmd);
 
